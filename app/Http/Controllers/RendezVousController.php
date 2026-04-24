@@ -38,6 +38,11 @@ class RendezVousController extends Controller
      */
     public function store(Request $request)
     {
+        // Combiner date + heure si date_heure n'est pas fourni
+        if (!$request->date_heure && $request->date && $request->heure) {
+            $request->merge(['date_heure' => $request->date . ' ' . $request->heure . ':00']);
+        }
+
         $validated = $request->validate([
             'medecin_id' => 'required|exists:medecins,id',
             'date_heure' => 'required|date|after:now',
