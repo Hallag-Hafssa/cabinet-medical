@@ -46,7 +46,11 @@ class Medecin extends Model
      */
     public function isDisponible(\DateTime $dateHeure, int $duree = 30): bool
     {
-        $jour = strtolower(\Carbon\Carbon::parse($dateHeure)->translatedFormat('l'));
+        $joursMap = [
+            'monday' => 'lundi', 'tuesday' => 'mardi', 'wednesday' => 'mercredi',
+            'thursday' => 'jeudi', 'friday' => 'vendredi', 'saturday' => 'samedi', 'sunday' => 'dimanche',
+        ];
+        $jour = $joursMap[strtolower(\Carbon\Carbon::parse($dateHeure)->format('l'))];
 
         // Vérifier si le médecin travaille ce jour-là
         $dispo = $this->disponibilites()
