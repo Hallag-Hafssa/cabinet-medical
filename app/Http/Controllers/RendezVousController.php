@@ -64,8 +64,12 @@ class RendezVousController extends Controller
             'statut' => 'en_attente',
         ]);
 
-        // Notification email de confirmation
-        auth()->user()->notify(new RendezVousConfirme($rdv));
+// Notification email de confirmation
+	try {
+    	auth()->user()->notify(new RendezVousConfirme($rdv));
+	} catch (\Exception $e) {
+   	 // Email non envoyé - on continue quand même
+	}
 
         return redirect()->route('patient.rdv.index')
                          ->with('success', 'Rendez-vous pris avec succès !');
